@@ -1,10 +1,5 @@
-# MapGen
-This is a small map generating program written by Samuel Taylor.
-
-What the program does
--------
-This program allows users to create a map of obsticals and objects and export each object's coordinates into a file. 
-
+# Treasure_Hunt_One
+This is a virtual robot program written by SwitchCovUni
 
 How to run the program
 -------
