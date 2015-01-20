@@ -12,12 +12,16 @@ Config.set('graphics', 'width', '850')
 Config.set('graphics', 'height', '780')
 
 # Sets the background tile type
-type_list = [1, 3, 5]
+type_list = []
 
 class Tiles(FloatLayout):
     def __init__(self, **kwargs):
         super(Tiles, self).__init__(**kwargs)
         xpos = 50
+
+        for n in range(0, 1560):
+            type_list.append(0)
+
         for n in type_list:
 
             with self.canvas:
