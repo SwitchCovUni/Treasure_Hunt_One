@@ -17,24 +17,39 @@ type_list = []
 class Tiles(FloatLayout):
     def __init__(self, **kwargs):
         super(Tiles, self).__init__(**kwargs)
-        xpos = 50
 
+        # Creates a blank canvas ready for loading
         for n in range(0, 1560):
             type_list.append(0)
+
+        # Variables used for creating the blocks
+        xpos = 50
+        ypos = 760
+        place_in_row = 1
 
         for n in type_list:
 
             with self.canvas:
                 # Add a red color
+                # TODO add sprites
                 Color(1., 0, 0)
 
                 # Add a rectangle
-                Rectangle(pos=(xpos, 760), size=(20, 20))
+                Rectangle(pos=(xpos, ypos), size=(20, 20))
 
-            xpos += 20
+            # Once the blocks get to row 40 start a new line
+            if place_in_row == 40:
+                print "test"
+                place_in_row = 1
+                ypos -= 20
+                xpos = 50
+                print ypos
+            else:
+                place_in_row += 1
+                xpos += 20
+
 
 class ArenaMain(Widget):
-    layout = FloatLayout(size=(800, 780))
 
     def side_buttons(self):
         rooty = main.Root()
