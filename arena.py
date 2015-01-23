@@ -1,31 +1,59 @@
 from kivy.uix.widget import Widget
-from kivy.clock import Clock
-from kivy.graphics import *
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 
 from kivy.config import Config
+from kivy.graphics import Color, Rectangle
+from kivy.uix.image import Image
 
+import main
 
 # Sets the initial window size which will be filled with 20 by 20 blocks
 Config.set('graphics', 'width', '850')
 Config.set('graphics', 'height', '780')
 
-layout = GridLayout(cols=40, size_hint_x=None, width=850)
-class Arena_Main(Widget):
+# Sets the background tile type
+type_list = []
 
 
-    # Loop for robot movement and interactions etc
-    # Clock.schedule_interval(self.update, 1.0 / 60.0)
-    def update(self):
-        pass
+class ArenaMain(Widget):
+    arena_layout = GridLayout(cols=40, size_hint_x=None, width=800, height= 780)
+
+    # List to hold the buttons
+    block_list = []
+
+    def start(self):
+
+        # Creates a blank canvas ready for loading
+        for n in range(0, 1560):
+            type_list.append(0)
 
 
-    def start_arena(self):
-        button = Button(text='This is a', font_size=14)
 
-        button2 = Button(text='test page', font_size=14)
-        layout.add_widget(button)
-        layout.add_widget(button2)
+        # Adds buttons as widgets to the list
+        for n in range(0, 1560):
+            self.block_list.append(Image(source='Resources/smallTreasure1.png'))
+            self.arena_layout.add_widget(self.block_list[n])
 
-        return layout
+        return self.arena_layout
+
+    def side_buttons(self):
+        rooty = main.Root()
+
+        def open_press(instance):
+            rooty.set_sender("arena")
+            rooty.show_load()
+
+        # Layout to stack buttons
+        side_btn_layout = StackLayout(size_hint_x=None, width=50)
+
+        # Button to open map file
+        btn_open = Button(text='Open', size_hint=(1, .1))
+        btn_open.bind(on_press=open_press)
+
+        side_btn_layout.add_widget(btn_open)
+
+        return side_btn_layout
+

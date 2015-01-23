@@ -84,6 +84,7 @@ class MapGenCore(Widget):
         rooty = main.Root()
 
         def open_press(instance):
+            rooty.set_sender("map")
             rooty.show_load()
 
         def save_press(instance):

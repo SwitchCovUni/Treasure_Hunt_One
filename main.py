@@ -24,13 +24,13 @@ Config.set('graphics', 'height', '780')
 # Store the different screens
 sm = ScreenManager()
 
-# Loads widgets child widgets of LoadDialog from Treasure_Hunt.kv
+# Loads widgets child widgets of LoadDialog from TreasureHunt.kv
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
 
 
-# Loads widgets child widgets of SaveDialog from Treasure_Hunt.kv
+# Loads widgets child widgets of SaveDialog from TreasureHunt.kv
 class SaveDialog(FloatLayout):
     save = ObjectProperty(None)
     text_input = ObjectProperty(None)
@@ -41,6 +41,48 @@ class Root(FloatLayout):
     loadfile = ObjectProperty(None)
     savefile = ObjectProperty(None)
     text_input = ObjectProperty(None)
+
+    # Holds module that requested I
+    sender_module = ""
+
+    def set_sender(self, module):
+        self.sender_module = module
+
+    def load_file(self, path, filename, file_valid):
+        try:
+            # Loads file into a stream ready for reading
+            with open(os.path.join(path, filename[0])) as stream:
+
+                # Unpacks stream to a stream
+                loadable = stream.read()
+
+                # Loop splits file characters into the list
+                count = 0
+                for n in loadable:
+                    if self.sender_module == "map":
+                        map_gen.type_list[count] = int(loadable[count])
+                    if self.sender_module == "arena":
+                        arena.type_list[count] = int(loadable[count])
+                    count += 1
+
+                # Refresh the button matrix
+                if self.sender_module == "map":
+                    core = map_gen.MapGenCore()
+                    core.block_refresh()
+
+                file_valid = True
+        except IOError:
+            print('Do you have I/O permission?')
+        except:
+            file_valid = False
+
+        # Resets the map if file is invalid
+        if file_valid == False:
+            print 'The file that you are trying to open is invalid'
+            for n in range(0, 1560):
+                map_gen.type_list[n] = 1
+            core.block_refresh()
+
 
     # Generic library code to close the current dialogue
     def dismiss_popup(self):
@@ -59,22 +101,9 @@ class Root(FloatLayout):
         self._popup.open()
 
     def load(self, path, filename):
-        # Loads file into a stream ready for reading
-        with open(os.path.join(path, filename[0])) as stream:
-            core = map_gen.MapGenCore()
+        file_valid = False
 
-            # Unpacks stream to a stream
-            loadable = stream.read()
-
-            # Loop splits file characters into the list
-            count = 0
-            for n in loadable:
-                map_gen.type_list[count] = int(loadable[count])
-                count += 1
-
-            # Refresh the button matrix
-            core.block_refresh()
-
+        self.load_file(path, filename,file_valid)
         self.dismiss_popup()
 
     def save(self, path, filename):
@@ -91,10 +120,14 @@ class Root(FloatLayout):
 
         self.dismiss_popup()
 
+
+
+
 class MenuCore(Widget):
     def menu_screen_layout(self):
         def map_screen(self):
             sm.current = 'mapgen'
+
         def arena_screen(self):
             sm.current = 'arenascreen'
 
@@ -110,16 +143,22 @@ class MenuCore(Widget):
         return layout
 
 
-class Treasure_HuntApp(App):
+class TreasureHuntApp(App):
     def build(self):
         # Initialise screens with names as identifiers
         screen1 = Screen(name='menuscreen')
         screen2 = Screen(name='mapgen')
         screen3 = Screen(name='arenascreen')
 
-        #access to arena screen
-        arena_screen = arena.Arena_Main()
-        arena_layout = arena_screen.start_arena()
+        # Access to arena screen
+        arena_screen = arena.ArenaMain()
+        arena_btn_layout = arena_screen.side_buttons()
+        arena_canvas = arena_screen.start()
+
+        # Adding sections to layout
+        arena_layout = GridLayout(cols=2)
+        arena_layout.add_widget(arena_btn_layout)
+        arena_layout.add_widget(arena_canvas)
 
         # Access to the menu screen
         menu = MenuCore()
@@ -128,12 +167,12 @@ class Treasure_HuntApp(App):
         # Create objects of program sections
         core = map_gen.MapGenCore()
         map_layout = core.block_gen()
-        btn_layout = core.side_buttons()
+        map_btn_layout = core.side_buttons()
 
         # map_gen_layout holds both parts of the Map Gen UI
         map_gen_layout = GridLayout(cols=2)
         map_gen_layout.add_widget(map_layout)
-        map_gen_layout.add_widget(btn_layout)
+        map_gen_layout.add_widget(map_btn_layout)
 
         # Adds layouts to the screen manager as screen
         screen1.add_widget(menu_layout)
@@ -152,4 +191,4 @@ Factory.register('LoadDialog', cls=LoadDialog)
 Factory.register('SaveDialog', cls=SaveDialog)
 
 if __name__ == '__main__':
-    Treasure_HuntApp().run()
+    TreasureHuntApp().run()
