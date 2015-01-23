@@ -153,7 +153,7 @@ class TreasureHuntApp(App):
         # Access to arena screen
         arena_screen = arena.ArenaMain()
         arena_btn_layout = arena_screen.side_buttons()
-        arena_canvas = arena_screen.main_arena()
+        arena_canvas = arena_screen.start()
 
         # Adding sections to layout
         arena_layout = GridLayout(cols=2)
