@@ -65,6 +65,7 @@ class Root(FloatLayout):
                         arena.type_list[count] = int(loadable[count])
                     count += 1
 
+
                 # Refresh the button matrix
                 if self.sender_module == "map":
                     core = map_gen.MapGenCore()
@@ -76,17 +77,15 @@ class Root(FloatLayout):
         except:
             file_valid = False
 
-        # Resets the map if file is invalid
-        if file_valid == False:
-            print 'The file that you are trying to open is invalid'
-            for n in range(0, 1560):
-                map_gen.type_list[n] = 1
-            core.block_refresh()
+
 
 
     # Generic library code to close the current dialogue
     def dismiss_popup(self):
         self._popup.dismiss()
+        if self.sender_module == "arena":
+            ma = arena.ArenaMain()
+            ma.load_blocks()
 
     # Generic library code for the load dialogue
     def show_load(self):
