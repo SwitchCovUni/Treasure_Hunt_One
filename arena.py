@@ -19,18 +19,32 @@ type_list = []
 
 
 class ArenaMain(Widget):
-    arena_layout = GridLayout(cols=40, size_hint_x=None, width=800, height= 780)
+    arena_layout = GridLayout(cols=40, size_hint_x=None, width=800, size_hint_y=None, height= 780)
 
     # List to hold the buttons
     block_list = []
+
+    def load_blocks(self):
+        self.arena_layout.clear_widgets()
+        self.block_list[:] = []
+        for n in range(0, 1560):
+
+            if type_list[n] == 1:
+                self.block_list.append(Image(source='Resources/floorSprite.png'))
+            elif type_list[n] == 2:
+                self.block_list.append(Image(source='Resources/wallSprite.png'))
+            elif type_list[n] == 3:
+                self.block_list.append(Image(source='Resources/smallTreasure1.png'))
+
+            self.arena_layout.add_widget(self.block_list[n])
+
+
 
     def start(self):
 
         # Creates a blank canvas ready for loading
         for n in range(0, 1560):
             type_list.append(0)
-
-
 
         # Adds buttons as widgets to the list
         for n in range(0, 1560):
