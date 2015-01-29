@@ -290,7 +290,7 @@ list.reverse(coords1)
 
 matrix = [coords1, coords2, coords3, coords4, coords5, coords6, coords7, coords8, coords9, coords10, coords11, coords12, coords13, coords14, coords15, coords16, coords17, coords18, coords19, coords20, coords21, coords22, coords23, coords24, coords25, coords26, coords27, coords28, coords29, coords30, coords31, coords32, coords33, coords34, coords35, coords36, coords37, coords38, coords39]
 
-print matrix
+#print matrix
 
 sprite1 = PhotoImage(file = 'sprites/floorSprite.gif')
 sprite2 = PhotoImage(file = 'sprites/wallSprite.gif')
@@ -348,43 +348,7 @@ for i in range(40):
             ylights.append(coy)
             slights.append(0)
 
-class Robots:
-   rbtCount = 0
 
-   def __init__(self, points, xco, yco):
-      self.xco = xco
-      self.yco = yco
-      self.points = points
-      Robots.rbtCount += 1
-
-i = 0
-j = 0
-
-while i < 40:
-    while j < 39:
-        if matrix[j][i] == 3:
-            cox1 = i*20
-            coy1 = j*20
-            robot1=Robots(0, cox1, coy1)
-            i = 40
-            j = 39
-        j = j + 1
-    i = i + 1
-
-i = cox1/10
-j = coy1/10
-
-while i < 40:
-    while j < 39:
-        if matrix[j][i] == 3:
-            cox2 = i*20
-            coy2 = j*20
-            robot2=Robots(0, cox2, coy2)
-            j = 39
-            i = 40
-        j = j + 1
-    i = i + 1
-            
 
 def lights1():
     global slights
@@ -425,15 +389,18 @@ def lights2():
                 ko = ko + 1
 
 
-bot1= canvas.create_image(robot1.xco, robot1.yco, image=sprite6, anchor = NW)
-bot2= canvas.create_image(robot2.xco, robot2.yco, image=sprite6, anchor = NW)
+
+
 
 
 thread1 = threading.Thread(target=lights1)
 thread2 = threading.Thread(target=lights2)
 
+
 thread1.start()
 thread2.start()
+
+
 
     
 
