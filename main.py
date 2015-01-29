@@ -290,7 +290,7 @@ list.reverse(coords1)
 
 matrix = [coords1, coords2, coords3, coords4, coords5, coords6, coords7, coords8, coords9, coords10, coords11, coords12, coords13, coords14, coords15, coords16, coords17, coords18, coords19, coords20, coords21, coords22, coords23, coords24, coords25, coords26, coords27, coords28, coords29, coords30, coords31, coords32, coords33, coords34, coords35, coords36, coords37, coords38, coords39]
 
-print matrix
+#print matrix
 
 sprite1 = PhotoImage(file = 'sprites/floorSprite.gif')
 sprite2 = PhotoImage(file = 'sprites/wallSprite.gif')
@@ -311,8 +311,9 @@ treasure9 = PhotoImage(file = 'sprites/smallTreasure4.gif')
 treasure10 = PhotoImage(file = 'sprites/smallTreasure5.gif')
 
 treasures = [treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, treasure7, treasure8, treasure9, treasure10]
-
-
+xlights = []
+ylights = []
+slights = []
 
 # Loop to print the blocks
 for i in range(40):
@@ -343,8 +344,65 @@ for i in range(40):
             cox =i*20
             coy =j*20
             canvas.create_image(cox, coy, image=sprite4, anchor = NW)
-        
+            xlights.append(cox)
+            ylights.append(coy)
+            slights.append(0)
 
+
+
+def lights1():
+    global slights
+    for hr in range(len(xlights)):
+        if hr % 2 == 0:
+            canvas.create_image(xlights[hr], ylights[hr], image=sprite3, anchor = NW)
+    ko = 1
+    while ko < 400:
+        for hr in range(len(xlights)):
+            if hr %2 == 0:
+                canvas.create_image(xlights[hr], ylights[hr], image=sprite4, anchor = NW)
+                canvas.update()
+                slights[hr] = 0
+                time.sleep(2)
+                canvas.create_image(xlights[hr], ylights[hr], image=sprite3, anchor = NW)
+                canvas.update()
+                slights[hr] = 1
+                time.sleep(3)
+                ko = ko + 1
+            
+def lights2():
+    global slights
+    for hr in range(len(xlights)):
+        if hr % 2 != 0:
+            canvas.create_image(xlights[hr], ylights[hr], image=sprite3, anchor = NW)
+    ko = 1
+    while ko < 400:
+        for hr in range(len(xlights)):
+            if hr %2 != 0:
+                canvas.create_image(xlights[hr], ylights[hr], image=sprite4, anchor = NW)
+                canvas.update()
+                slights[hr] = 0
+                time.sleep(1)
+                canvas.create_image(xlights[hr], ylights[hr], image=sprite3, anchor = NW)
+                canvas.update()
+                slights[hr] = 1
+                time.sleep(2)
+                ko = ko + 1
+
+
+
+
+
+
+thread1 = threading.Thread(target=lights1)
+thread2 = threading.Thread(target=lights2)
+
+
+thread1.start()
+thread2.start()
+
+
+
+    
 
 
 window.mainloop()
