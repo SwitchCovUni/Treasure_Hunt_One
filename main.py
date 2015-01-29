@@ -3,6 +3,8 @@ import time
 import threading
 from Tkinter import *
 window = Tk()
+window.title("ALL Project 2 - Treasure Hunter")
+
 canvas = Canvas(window, width=800, height=780, bg='#cecece')
 canvas.pack()
 
