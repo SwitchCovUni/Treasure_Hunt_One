@@ -764,7 +764,7 @@ while go < 25:
                         detect_up()
                         
         
-    #UP------------
+    #UP-----------
     
     if ytreasures[ct] < py:
         lx = px
