@@ -3,8 +3,6 @@ import time
 import threading
 from Tkinter import *
 window = Tk()
-window.title("ALL Project 2 - Treasure Hunter")
-
 canvas = Canvas(window, width=800, height=780, bg='#cecece')
 canvas.pack()
 
@@ -292,7 +290,6 @@ list.reverse(coords1)
 
 matrix = [coords1, coords2, coords3, coords4, coords5, coords6, coords7, coords8, coords9, coords10, coords11, coords12, coords13, coords14, coords15, coords16, coords17, coords18, coords19, coords20, coords21, coords22, coords23, coords24, coords25, coords26, coords27, coords28, coords29, coords30, coords31, coords32, coords33, coords34, coords35, coords36, coords37, coords38, coords39]
 
-print matrix
 
 sprite1 = PhotoImage(file = 'sprites/floorSprite.gif')
 sprite2 = PhotoImage(file = 'sprites/wallSprite.gif')
@@ -316,8 +313,10 @@ treasures = [treasure1, treasure2, treasure3, treasure4, treasure5, treasure6, t
 xlights = []
 ylights = []
 slights = []
+xtreasures = []
+ytreasures = []
+ct = 0
 
-# Loop to print the blocks
 for i in range(40):
     for j in range(39):
         if matrix[j][i] == 1:
@@ -341,6 +340,8 @@ for i in range(40):
             coy =j*20
             r = random.randrange(0, 10)
             canvas.create_image(cox, coy, image=treasures[r], anchor = NW)
+            xtreasures.append(i)
+            ytreasures.append(j)
 
         if matrix[j][i] == 5:
             cox =i*20
@@ -427,8 +428,377 @@ def lights2():
                 ko = ko + 1
 
 
-bot1= canvas.create_image(robot1.xco, robot1.yco, image=sprite6, anchor = NW)
-bot2= canvas.create_image(robot2.xco, robot2.yco, image=sprite6, anchor = NW)
+bot1= canvas.create_image(cox1, coy1, image=sprite6, anchor = NW)
+bot2= canvas.create_image(cox2, coy2, image=sprite6, anchor = NW)
+
+def r1_right(finish):
+    global bot1
+    v = 1
+    while v == 1:
+        robot1.xco = robot1.xco + 1
+        x1 = robot1.xco
+        y1 = robot1.yco
+        time.sleep(0.05)
+        canvas.coords(bot1, robot1.xco, robot1.yco)
+        canvas.update()
+        if robot1.xco == finish:
+            v = 0
+
+def r1_left(finish):
+    global bot1
+    v = 1
+    while v == 1:
+        robot1.xco = robot1.xco - 1
+        x1 = robot1.xco
+        y1 = robot1.yco
+        time.sleep(0.05)
+        canvas.coords(bot1, robot1.xco, robot1.yco)
+        canvas.update()
+        if robot1.xco == finish:
+            v = 0
+
+def r1_up(finish):
+    global bot1
+    v = 1
+    while v == 1:
+        robot1.yco = robot1.yco - 1
+        x1 = robot1.xco
+        y1 = robot1.yco
+        time.sleep(0.05)
+        canvas.coords(bot1, robot1.xco, robot1.yco)
+        canvas.update()
+        if robot1.yco == finish:
+            v = 0
+
+def r1_down(finish):
+    global bot1
+    v = 1
+    while v == 1:
+        robot1.yco = robot1.yco + 1
+        x1 = robot1.xco
+        y1 = robot1.yco
+        time.sleep(0.05)
+        canvas.coords(bot1, robot1.xco, robot1.yco)
+        canvas.update()
+        if robot1.yco == finish:
+            v = 0
+
+checkpointsx=[]
+checkpointsy=[]
+
+if robot1.xco == 0:
+    px = 0
+else:
+    px = int(robot1.xco/10-1)
+if robot1.yco == 0:
+    0
+else:
+    py = int(robot1.yco/10-1)
+    
+#checkpointsx.append(px)
+#checkpointsy.append(py)
+k = 0
+
+possx=[]
+possy=[]
+
+
+def detect_right():
+    global px
+    global py
+    global possx
+    global possy
+    global checkpointsx
+    global checkpointsy
+    global ct
+    go = 1
+    while go == 1:
+        k = 0
+        possx=[]
+        possy=[]
+            
+            
+        if (matrix[py][px+1] == 1 or matrix[py][px+1] == 5) and px < 40:
+            go = 1
+            px = px + 1
+        else:
+            go = 0
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+
+        if (matrix[py+1][px] == 1 or matrix[py+1][px] == 5) and py < 39 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+
+        if (matrix[py-1][px] == 1 or matrix[py-1][px] == 5) and py > 0 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+
+
+
+def detect_down():
+    global px
+    global py
+    global possx
+    global possy
+    global checkpointsx
+    global checkpointsy
+    global ct
+    go = 1
+    while go == 1:
+        k = 0
+        if (matrix[py+1][px] == 1 or matrix[py+1][px] == 5) and py < 39:
+            go = 1
+            py = py + 1
+        else:
+            go = 0
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+            
+    
+        if (matrix[py][px-1] == 1 or matrix[py][px-1] == 5) and px > 0 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+    
+
+        if (matrix[py][px+1] == 1 or matrix[py][px+1] == 5) and px < 40 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+
+
+
+def detect_up():
+    global px
+    global py
+    global possx
+    global possy
+    global checkpointsx
+    global checkpointsy
+    global ct
+    go = 1
+    while go == 1:
+        k = 0
+
+
+        if (matrix[py-1][px] == 1 or matrix[py-1][px] == 5) and py > 0:
+            go = 1
+            py = py - 1
+        else:
+            go = 0
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+            
+    
+        if (matrix[py][px-1] == 1 or matrix[py][px-1] == 5):
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+    
+
+        if (matrix[py][px+1] == 1 or matrix[py][px+1] == 5) and px < 40 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+
+def detect_left():
+    global px
+    global py
+    global possx
+    global possy
+    global checkpointsx
+    global checkpointsy
+    global ct
+    go = 1
+    while go == 1:
+        k = 0
+
+    
+        if (matrix[py][px-1] == 1 or matrix[py][px-1] == 5) and px > 0:
+            go = 1
+            px = px - 1
+        else:
+            go = 0
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+
+        if (matrix[py+1][px] == 1 or matrix[py+1][px] == 5) and py < 39 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+
+        if (matrix[py-1][px] == 1 or matrix[py-1][px] == 5) and py > 0 and go == 1:
+            g = 0
+            for i in range(len(checkpointsx)):
+                if px == checkpointsx[i] and py == checkpointsy[i]:
+                    g = 1
+            if g == 0:
+                checkpointsx.append(px)
+                checkpointsy.append(py)
+lx = px
+ly = py
+go = 1
+t = 0
+while go < 25:
+    #RIGHT------------
+    
+    if xtreasures[ct] > px:
+        lx = px
+        ly = py
+        detect_right()
+        #-----
+        if lx == px and ly == py:
+            px = checkpointsx[len(checkpointsx)-2]
+            py = checkpointsy[len(checkpointsy)-2]
+            checkpointsx.remove(checkpointsx[len(checkpointsx)-1])
+            checkpointsy.remove(checkpointsy[len(checkpointsy)-1])
+            lx == px
+            ly == py
+            detect_right()
+            if lx == px and ly == py:
+                px = checkpointsx[len(checkpointsx)-1]
+                py = checkpointsy[len(checkpointsy)-1]
+                lx == px
+                ly == py
+                detect_down()
+                if lx == px and ly == py:
+                    px = checkpointsx[len(checkpointsx)-1]
+                    py = checkpointsy[len(checkpointsy)-1]
+                    lx == px
+                    ly == py
+                    detect_up()
+                    if lx == px and ly == py:
+                        px = checkpointsx[len(checkpointsx)-1]
+                        py = checkpointsy[len(checkpointsy)-1]
+                        detect_left()
+                    
+    #DOWN-------------
+    
+    if ytreasures[ct] > py:
+        lx = px
+        ly = py
+        detect_down()
+        if lx == px and ly == py:
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+            lx == px
+            ly == py
+            detect_down()
+            if px == lx and py == ly:
+                px = checkpointsx[len(checkpointsx)-1]
+                py = checkpointsy[len(checkpointsy)-1]
+                lx == px
+                ly == py
+                detect_up()
+                if px == lx and py == ly:
+                    px = checkpointsx[len(checkpointsx)-1]
+                    py = checkpointsy[len(checkpointsy)-1]
+                    lx == px
+                    ly == py
+                    detect_left()
+                    if px == lx and py == ly:
+                        px = checkpointsx[len(checkpointsx)-1]
+                        py = checkpointsy[len(checkpointsy)-1]
+                        detect_right()
+                        
+    #LEFT----------
+    
+    if xtreasures[ct] < px:
+        lx = px
+        ly = py
+        detect_left()
+        if px == lx and py == ly:
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+            #checkpointsx.remove(checkpointsx[len(checkpointsx)-1])
+            #checkpointsy.remove(checkpointsy[len(checkpointsy)-1])
+            lx == px
+            ly == py
+            detect_left()
+            if px == lx and py == ly:
+                px = checkpointsx[len(checkpointsx)-1]
+                py = checkpointsy[len(checkpointsy)-1]
+                lx == px
+                ly == py
+                detect_right()
+                if px == lx and py == ly:
+                    px = checkpointsx[len(checkpointsx)-1]
+                    py = checkpointsy[len(checkpointsy)-1]
+                    lx == px
+                    ly == py
+                    detect_down()
+                    if px == lx and py == ly:
+                        px = checkpointsx[len(checkpointsx)-1]
+                        py = checkpointsy[len(checkpointsy)-1]
+                        detect_up()
+                        
+        
+    #UP------------
+    
+    if ytreasures[ct] < py:
+        lx = px
+        ly = py
+        detect_up()
+        if px == lx and py == ly:
+            px = checkpointsx[len(checkpointsx)-1]
+            py = checkpointsy[len(checkpointsy)-1]
+            lx == px
+            ly == py
+            detect_up()
+            if px == lx and py == ly:
+                px = checkpointsx[len(checkpointsx)-1]
+                py = checkpointsy[len(checkpointsy)-1]
+                lx == px
+                ly == py
+                detect_left()
+                if px == lx and py == ly:
+                    px = checkpointsx[len(checkpointsx)-1]
+                    py = checkpointsy[len(checkpointsy)-1]
+                    lx == px
+                    ly == py
+                    detect_right()
+                    if px == lx and py == ly:
+                        px = checkpointsx[len(checkpointsx)-1]
+                        py = checkpointsy[len(checkpointsy)-1]
+                        detect_down()
+                                
+        
+    if xtreasures[ct] == px and ytreasures[ct] == py:
+        go = 0
+    lx = px
+    ly = py
+    go = go + 1
 
 
 thread1 = threading.Thread(target=lights1)
@@ -437,7 +807,37 @@ thread2 = threading.Thread(target=lights2)
 thread1.start()
 thread2.start()
 
-    
+if robot1.xco == 0:
+    rx = robot1.xco/10
+else:
+    rx = robot1.xco/10-1
+if robot1.yco == 0:
+    ry = robot1.yco/10
+else:
+    ry = robot1.yco/10-1
+
+for i in range(len(checkpointsx)):
+    go = 1
+    if checkpointsy[i] == ry and checkpointsx[i] > rx and go ==1:
+        r1_right(checkpointsx[i]*20)
+        go = 0
+        rx = checkpointsx[i]
+        ry = checkpointsy[i]
+    if checkpointsy[i] == ry and checkpointsx[i] < rx and go == 1:
+        r1_left(checkpointsx[i]*20)
+        go = 0
+        rx = checkpointsx[i]
+        ry = checkpointsy[i]
+    if checkpointsx[i] == rx and checkpointsy[i] > ry and go == 1:
+        r1_down(checkpointsy[i]*20)
+        go = 0
+        rx = checkpointsx[i]
+        ry = checkpointsy[i]
+    if checkpointsx[i] == rx and checkpointsy[i] < ry and go == 1:
+        r1_up(checkpointsy[i]*20)
+        go = 0
+        rx = checkpointsx[i]
+        ry = checkpointsy[i]
 
 
 window.mainloop()
