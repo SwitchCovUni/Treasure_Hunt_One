@@ -5,7 +5,7 @@ The project is split into multiple parts one part of the program is purely for g
 
 How to run the program
 -------
-For the main part of the program you will need to have python 2.7.9 installed on to your computer. As far as we have tested, the program will work on both 32 bit and 64 bit installs. To run the main program simply open the main.py file on in python. There are no additional libraries required o run the main program. The GUI of the program uses tKinter which is already built into standard python installations. To install python you should visit http://python.org/ and the rest of the process should be self explanatory.
+For the main part of the program you will need to have python 2.7.9 installed on to your computer. As far as we have tested, the program will work on both 32 bit and 64 bit installs. To run the main program simply open the main.py file in python. There are no additional libraries required to run the main program. The GUI of the program uses tKinter which is already built into standard python installations. To install python you should visit http://python.org/ and the rest of the process should be self explanatory.
 
 Resources
 -------
